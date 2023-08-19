@@ -127,7 +127,7 @@ namespace Platformer
         /// </summary>
         private void FlipFacingDirection()
         {
-            if (horizontalInput == 0)
+            if (horizontalInput == 0) // if we are not moving just return, no need to check face direction
             {
                 return;
             }
