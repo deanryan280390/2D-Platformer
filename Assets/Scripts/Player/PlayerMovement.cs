@@ -33,12 +33,16 @@ namespace Platformer
         [SerializeField] 
         private float playerGroundOffset = 0.16f;
 
+        private bool isFacingRight = true;
+        private SpriteRenderer spriteRenderer;
+        
         #region  Unity Functions
 
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
             rigidBody.freezeRotation = true;
+            spriteRenderer = transform.GetComponent<SpriteRenderer>();
             isReadyToJump = true;
             groundDistance = GetComponent<BoxCollider2D>().bounds.extents.y + playerGroundOffset; // setting the offset here so not to calculate each frame in update
         }
@@ -47,6 +51,7 @@ namespace Platformer
         {
             horizontalInput = Input.GetAxis(Global.StringIdentifiers.HorizontalInputKey) * movementSpeed;
             Jump();
+            FlipFacingDirection();
         }
 
         private void FixedUpdate()
@@ -112,5 +117,29 @@ namespace Platformer
         }
         
         #endregion
+
+        /// <summary>
+        /// Added Flip facing direction to detect what way the player is movement and respond to the input and face correct direction
+        /// Using the flip X field to change sprite direction
+        /// isFacingRight is set to true by default
+        /// checks is the horizontal input value less than 0 and isFacingdirection is true or ie moving left
+        /// isFacingdirection false and horizontal input value greater than 0 ie . moving right
+        /// </summary>
+        private void FlipFacingDirection()
+        {
+            if (horizontalInput == 0)
+            {
+                return;
+            }
+
+            if (isFacingRight && horizontalInput < 0 || !isFacingRight && horizontalInput > 0)
+            {
+                spriteRenderer.flipX = isFacingRight;
+                isFacingRight = !isFacingRight;
+            }
+                
+                
+        }
+        
     }
 }
