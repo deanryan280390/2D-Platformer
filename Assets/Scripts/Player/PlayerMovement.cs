@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Platformer
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour,IDamage<int>
     {
         [Header("Input")]
         private float horizontalInput;
@@ -42,6 +42,7 @@ namespace Platformer
         {
             rigidBody = GetComponent<Rigidbody2D>();
             rigidBody.freezeRotation = true;
+            
             spriteRenderer = transform.GetComponent<SpriteRenderer>();
             isReadyToJump = true;
             groundDistance = GetComponent<BoxCollider2D>().bounds.extents.y + playerGroundOffset; // setting the offset here so not to calculate each frame in update
@@ -50,13 +51,13 @@ namespace Platformer
         private void Update()
         {
             horizontalInput = Input.GetAxis(Global.StringIdentifiers.HorizontalInputKey) * movementSpeed;
-            Jump();
             FlipFacingDirection();
         }
 
         private void FixedUpdate()
         {
             MovePlayer(horizontalInput);
+            Jump();
         }
 
         #endregion
@@ -103,9 +104,9 @@ namespace Platformer
         /// Have a layer mask set for ground to check if the object is ground or not , we also have a layer set for player - "what is Player" and this let us know that is the player 
         /// </summary>
         /// <returns>boolean</returns>
-        private bool IsGrounded()
+        public bool IsGrounded()
         {
-            return Physics2D.Raycast(transform.position, Vector3.down, groundDistance, whatIsGround);
+            return Physics2D.Raycast(transform.position, Vector3.down,groundDistance, whatIsGround);
         }
         
         /// <summary>
@@ -137,9 +138,11 @@ namespace Platformer
                 spriteRenderer.flipX = isFacingRight;
                 isFacingRight = !isFacingRight;
             }
-                
-                
         }
-        
+
+        public void Damage(int damageTaken)
+        {
+            
+        }
     }
 }
