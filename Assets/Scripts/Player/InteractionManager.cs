@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Platformer
 {
@@ -8,6 +9,14 @@ namespace Platformer
         {
             var item = col.GetComponent<IInteractable>();
             item?.Pickup();
+
+            var damage = col.GetComponent<IDamage<int>>();
+            if (!transform.GetComponent<PlayerMovement>().IsGrounded())
+            {
+                damage?.Damage(10);
+            }
+            
+            
         }
     }
 }
