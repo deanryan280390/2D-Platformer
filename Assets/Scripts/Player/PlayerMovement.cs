@@ -2,8 +2,10 @@ using UnityEngine;
 
 namespace Platformer
 {
-    public class PlayerMovement : MonoBehaviour,IDamage<int>
+    public class PlayerMovement : MonoBehaviour
     {
+        private Vector2 startingPosition;
+        
         [Header("Input")]
         private float horizontalInput;
         
@@ -35,22 +37,23 @@ namespace Platformer
 
         private bool isFacingRight = true;
         private SpriteRenderer spriteRenderer;
-        
+
         #region  Unity Functions
 
         private void Awake()
         {
             rigidBody = GetComponent<Rigidbody2D>();
             rigidBody.freezeRotation = true;
-            
+            GameManager.RestartGame += PlayerReset;
             spriteRenderer = transform.GetComponent<SpriteRenderer>();
+            startingPosition = transform.position;
             isReadyToJump = true;
             groundDistance = GetComponent<BoxCollider2D>().bounds.extents.y + playerGroundOffset; // setting the offset here so not to calculate each frame in update
         }
         
         private void Update()
         {
-            horizontalInput = Input.GetAxis(Global.StringIdentifiers.HorizontalInputKey) * movementSpeed;
+            horizontalInput = Input.GetAxis(StringIdentifiers.HorizontalInputKey) * movementSpeed;
             FlipFacingDirection();
         }
 
@@ -106,7 +109,7 @@ namespace Platformer
         /// <returns>boolean</returns>
         public bool IsGrounded()
         {
-            return Physics2D.Raycast(transform.position, Vector3.down,groundDistance, whatIsGround);
+            return Physics2D.Raycast(transform.position, Vector3.down, groundDistance, whatIsGround);
         }
         
         /// <summary>
@@ -140,9 +143,11 @@ namespace Platformer
             }
         }
 
-        public void Damage(int damageTaken)
+        private void PlayerReset()
         {
-            
+            Debug.Log("Player Reset");
+            transform.position = startingPosition;
+            spriteRenderer.flipX = false;
         }
     }
 }
