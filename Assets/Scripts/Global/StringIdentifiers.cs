@@ -1,6 +1,6 @@
-﻿namespace Platformer.Global
+﻿namespace Platformer
 {
-    public class StringIdentifiers
+    public static class StringIdentifiers
     {
         public const string HorizontalInputKey = "Horizontal";
     }
