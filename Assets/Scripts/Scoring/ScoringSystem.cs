@@ -1,5 +1,4 @@
 using System.Linq;
-using Platformer.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +27,7 @@ namespace Platformer
             }
 
             Init();
+            GameManager.RestartGame += ResetScore;
         }
 
         /// <summary>
@@ -39,6 +39,13 @@ namespace Platformer
             scoreDisplayed.text = $"Score: {Score}";
         }
 
+        private void ResetScore()
+        {
+            Debug.Log("Score Reset");
+            Score = 0;
+            scoreDisplayed.text = $"Score: {Score}";
+        }
+        
         /// <summary>
         /// Initialise the IScoring Objects in the scene
         /// </summary>

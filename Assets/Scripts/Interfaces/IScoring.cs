@@ -1,4 +1,4 @@
-﻿namespace Platformer.Interfaces
+﻿namespace Platformer
 {
     public interface IScoring<T>
     {
