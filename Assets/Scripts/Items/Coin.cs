@@ -1,4 +1,3 @@
-using Platformer.Interfaces;
 using UnityEngine;
 
 namespace Platformer
@@ -7,14 +6,38 @@ namespace Platformer
     {
         private int coinScore = 10;
         public event IScoring<int>.UpdateUIScore OnUpdateUIScore;
+        
+        protected void Awake()
+        {
+            GameManager.RestartGame += CoinReset;
+        }
+                
+        /// <summary>
+        /// OnDestroy Event
+        /// Unsubscribes from event  
+        /// </summary>
+        protected void OnDestroy()
+        {
+            GameManager.RestartGame -= CoinReset;
+        }
 
         /// <summary>
-        /// PickUp - IInteractable , Destroys item and calls Score with Coin Value
+        /// IInteractable , Destroys item and calls Score with Coin Value
         /// </summary>
-        public void Pickup()
+        public void Action()
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
             SetScore(coinScore);
+        }
+
+        /// <summary>
+        /// Resets coin to original state
+        /// </summary>
+        private void CoinReset()
+        {
+            gameObject.SetActive(true);
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
         }
 
         /// <summary>
