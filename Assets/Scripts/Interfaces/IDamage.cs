@@ -1,4 +1,7 @@
-﻿public interface IDamage<T>
+﻿namespace Platformer
 {
-    void Damage(T damageTaken);
+    public interface IDamage<T>
+    {
+        void Damage(T damageTaken);
+    }
 }
