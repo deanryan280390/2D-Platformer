@@ -2,6 +2,6 @@ namespace Platformer
 {
     public interface IInteractable
     {
-        void Pickup();
+        void Action();
     }
 }

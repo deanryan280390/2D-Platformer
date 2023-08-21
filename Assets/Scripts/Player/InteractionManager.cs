@@ -7,16 +7,14 @@ namespace Platformer
     {
         private void OnTriggerEnter2D(Collider2D col)
         {
-            var item = col.GetComponent<IInteractable>();
-            item?.Pickup();
+            var interactable = col.GetComponent<IInteractable>();
+            interactable?.Action();
 
             var damage = col.GetComponent<IDamage<int>>();
             if (!transform.GetComponent<PlayerMovement>().IsGrounded())
             {
                 damage?.Damage(10);
             }
-            
-            
         }
     }
 }
